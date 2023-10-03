@@ -9,6 +9,8 @@ Pre-built jar files are available for each release. The syntax for running the J
 java -jar JSSCPUSpecCompiler.jar <source_spec_file> <output_java_file>
 ```
 
+Spec files used in JavaSystemSimulator are available in their own repository [CPUSpecifications](https://github.com/ComputingMongoose/CPUSpecifications).
+
 ## Macro definition
 A macro is defined on a line starting with "#define", followed by the macro name and parameters. If there are no macro parameteres, empty parantheses are required. The macro definition is written between "#{" and "#}". Currently, the macro is assumed to be on one line.
 
