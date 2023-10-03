@@ -36,6 +36,65 @@ tmp2=((#READ_NEXT())<<8)|tmp1;
 #define SET_ALU_FLAGS_CARRY(new) #{ #SET_FLAG_C( ((new&0x100)==0x100)?(1):(0)); #}
 ```
 
+## Features for CPU specifications
+CPU instructions often include fixed bits, identifying an instruction type, and variable bits identifying registers, condition flags or instruction variants. In the JSSCPUSpecCompiler it is possible to define bit values associated with intruction options as "MAP"s. These MAPs may be used in defining the macro name to be expanded (in a way they act as a special type of macro that will be expanded before regular macros). Inside each MAP definition are bit values followed by a string encoding, useful for invoking macros or other functions. The MAP definition ends with a line containing the keyword "END".
+
+MAP example:
+```
+MAP RP
+00 BC
+01 DE
+10 HL
+11 SP
+END
+```
+
+MAP usage example:
+```
+tmp1=#GET_$RP$();
+```
+
+Complete CPU instructions can be specified as a combination of fixed bits and MAPs. These are separated using "|".
+
+Example instruction:
+```
+00|RP|0011
+```
+
+The instruction specification should be preceded by a line identifying the instruction name. This special line starts with ":", followed by the instruction name. The end of an instruction definition block is indicated by the next instruction specification or by a special line containing ":.".
+
+Complete example:
+```
+MAP SSS
+111 A
+000 B
+001 C
+010 D
+011 E
+100 H
+101 L
+END
+
+MAP DDD
+111 A
+000 B
+001 C
+010 D
+011 E
+100 H
+101 L
+END
+
+:MOV R1,R2
+01|DDD|SSS
+#SET_$DDD$(#GET_$SSS$())
+
+:.
+
+```
+The above example assumes there are macro definitions for #SET_A, #SET_B, #SET_C,... , #GET_A, #GET_B, #GET_c, ..., #GET_L.
+
+
 # Youtube
 
 Checkout my YouTube channel for interesting videos: https://www.youtube.com/@ComputingMongoose/
